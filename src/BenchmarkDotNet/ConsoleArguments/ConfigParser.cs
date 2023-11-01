@@ -533,6 +533,7 @@ namespace BenchmarkDotNet.ConsoleArguments
                 case RuntimeMoniker.Net60:
                 case RuntimeMoniker.Net70:
                 case RuntimeMoniker.Net80:
+                case RuntimeMoniker.Net90:
                     return baseJob
                         .WithRuntime(runtimeMoniker.GetRuntime())
                         .WithToolchain(CsProjCoreToolchain.From(new NetCoreAppSettings(runtimeId, null, runtimeId, options.CliPath?.FullName, options.RestorePath?.FullName)));
@@ -548,6 +549,9 @@ namespace BenchmarkDotNet.ConsoleArguments
 
                 case RuntimeMoniker.NativeAot80:
                     return CreateAotJob(baseJob, options, runtimeMoniker, "", "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet8/nuget/v3/index.json");
+
+                case RuntimeMoniker.NativeAot90:
+                    return CreateAotJob(baseJob, options, runtimeMoniker, "", "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json");
 
                 case RuntimeMoniker.Wasm:
                     return MakeWasmJob(baseJob, options, RuntimeInformation.IsNetCore ? CoreRuntime.GetCurrentVersion().MsBuildMoniker : "net5.0", runtimeMoniker);
@@ -579,6 +583,9 @@ namespace BenchmarkDotNet.ConsoleArguments
                 case RuntimeMoniker.MonoAOTLLVMNet80:
                     return MakeMonoAOTLLVMJob(baseJob, options, "net8.0");
 
+                case RuntimeMoniker.MonoAOTLLVMNet90:
+                    return MakeMonoAOTLLVMJob(baseJob, options, "net9.0");
+
                 case RuntimeMoniker.Mono60:
                     return MakeMonoJob(baseJob, options, MonoRuntime.Mono60);
 
@@ -587,6 +594,9 @@ namespace BenchmarkDotNet.ConsoleArguments
 
                 case RuntimeMoniker.Mono80:
                     return MakeMonoJob(baseJob, options, MonoRuntime.Mono80);
+
+                case RuntimeMoniker.Mono90:
+                    return MakeMonoJob(baseJob, options, MonoRuntime.Mono90);
 
                 case RuntimeMoniker.UnityMono:
                     return MakeUnityJob(baseJob, options, false);
