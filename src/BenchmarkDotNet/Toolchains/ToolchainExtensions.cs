@@ -13,6 +13,7 @@ using BenchmarkDotNet.Toolchains.Mono;
 using BenchmarkDotNet.Toolchains.MonoWasm;
 using BenchmarkDotNet.Toolchains.NativeAot;
 using BenchmarkDotNet.Toolchains.Roslyn;
+using BenchmarkDotNet.Toolchains.Unity;
 
 namespace BenchmarkDotNet.Toolchains
 {
@@ -169,6 +170,12 @@ namespace BenchmarkDotNet.Toolchains
 
                 case RuntimeMoniker.Mono80:
                     return MonoToolchain.Mono80;
+
+                case RuntimeMoniker.UnityMono:
+                    return UnityToolchain.Mono;
+
+                case RuntimeMoniker.UnityIl2Cpp:
+                    return UnityToolchain.Il2cpp;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(runtimeMoniker), runtimeMoniker, "RuntimeMoniker not supported");

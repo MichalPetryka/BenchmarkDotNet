@@ -184,5 +184,15 @@ namespace BenchmarkDotNet.Jobs
         /// .NET 8 using MonoVM (not CLR which is the default)
         /// </summary>
         Mono80,
+
+        /// <summary>
+        /// Unity using MonoVM
+        /// </summary>
+        UnityMono,
+
+        /// <summary>
+        /// Unity using IL2CPP
+        /// </summary>
+        UnityIl2Cpp,
     }
 }

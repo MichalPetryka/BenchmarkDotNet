@@ -31,6 +31,7 @@ using Perfolizer.Mathematics.OutlierDetection;
 using Perfolizer.Mathematics.SignificanceTesting;
 using Perfolizer.Mathematics.Thresholds;
 using BenchmarkDotNet.Toolchains.Mono;
+using BenchmarkDotNet.Toolchains.Unity;
 
 namespace BenchmarkDotNet.ConsoleArguments
 {
@@ -587,6 +588,12 @@ namespace BenchmarkDotNet.ConsoleArguments
                 case RuntimeMoniker.Mono80:
                     return MakeMonoJob(baseJob, options, MonoRuntime.Mono80);
 
+                case RuntimeMoniker.UnityMono:
+                    return MakeUnityJob(baseJob, options, false);
+
+                case RuntimeMoniker.UnityIl2Cpp:
+                    return MakeUnityJob(baseJob, options, true);
+
                 default:
                     throw new NotSupportedException($"Runtime {runtimeId} is not supported");
             }
@@ -667,6 +674,24 @@ namespace BenchmarkDotNet.ConsoleArguments
                 aotCompilerMode: options.AOTCompilerMode));
 
             return baseJob.WithRuntime(wasmRuntime).WithToolchain(toolChain);
+        }
+
+        private static Job MakeUnityJob(Job baseJob, CommandLineOptions options, bool il2cpp)
+        {
+            var monoAotLLVMRuntime = new Unity(aotCompilerPath: options.AOTCompilerPath, aotCompilerMode: options.AOTCompilerMode, msBuildMoniker: msBuildMoniker);
+
+            var toolChain = UnityToolchain.From(
+                new unit(
+                    targetFrameworkMoniker: monoAotLLVMRuntime.MsBuildMoniker,
+                    runtimeFrameworkVersion: null,
+                    name: monoAotLLVMRuntime.Name,
+                    customDotNetCliPath: options.CliPath?.FullName,
+                    packagesPath: options.RestorePath?.FullName,
+                    customRuntimePack: options.CustomRuntimePack,
+                    aotCompilerPath: options.AOTCompilerPath.ToString(),
+                    aotCompilerMode: options.AOTCompilerMode));
+
+            return baseJob.WithRuntime(monoAotLLVMRuntime).WithToolchain(toolChain);
         }
 
         private static IEnumerable<IFilter> GetFilters(CommandLineOptions options)
