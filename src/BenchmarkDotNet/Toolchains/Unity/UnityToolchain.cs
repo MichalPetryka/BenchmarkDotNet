@@ -18,7 +18,7 @@ namespace BenchmarkDotNet.Toolchains.Unity
     public class UnityToolchain : Toolchain
     {
         [PublicAPI] public static readonly UnityToolchain Mono = From();
-        [PublicAPI] public static readonly UnityToolchain Il2cpp = From();
+        [PublicAPI] public static readonly UnityToolchain Il2Cpp = From();
 
         [PublicAPI] public Version UnityVersion { get; }
 
